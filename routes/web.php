@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/test', function () {
+    return 123;
+});
+
 Route::get('/chat', function () {
     return view('ws');
 });
