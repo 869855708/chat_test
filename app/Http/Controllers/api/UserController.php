@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AuthRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('auth:api', ['except' => ['login']]);
-    }
+//    public function __construct()
+//    {
+//        $this->middleware('auth:api', ['except' => ['login']]);
+//    }
 
     /**
      * Get a JWT via given credentials.
@@ -36,6 +38,24 @@ class UserController extends Controller
         }
 
         return $this->respondWithToken($token);
+    }
 
+
+    /**
+     * 注册
+     * @return void
+     */
+    public function register(AuthRequest $request)
+    {
+            // 获取通过验证的数据...
+            $validated = $request->validated();
+
+            dd($validated);
+    }
+
+    public function show()
+    {
+
+        return 112;
     }
 }
