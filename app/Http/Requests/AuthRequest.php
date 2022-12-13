@@ -30,8 +30,8 @@ class AuthRequest extends FormRequest
     {
         $rules = [
             'name' => 'required|unique:users|min:6|max:30',
-            'email' => 'required|email:rfc,dns|max:255',
-            'password' => 'required|confirmed|min:6',
+            'email' => 'required|email:rfc|max:255',
+            'password' => 'required|min:6|confirmed',
         ];
 
         return $rules;

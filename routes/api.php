@@ -21,3 +21,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // 获取资源
 Route::get('/show', [\App\Http\Controllers\api\UserController::class, 'show'])->middleware('apiAuth');
 Route::post('/register', [\App\Http\Controllers\api\UserController::class, 'register']);
+Route::post('/login', [\App\Http\Controllers\api\UserController::class, 'login']);
+Route::post('/logout', [\App\Http\Controllers\api\UserController::class, 'logout'])->middleware('apiAuth');
+Route::post('/refresh', [\App\Http\Controllers\api\UserController::class, 'refresh'])->middleware('apiAuth');

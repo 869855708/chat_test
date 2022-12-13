@@ -3,8 +3,11 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Throwable;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 
 class Handler extends ExceptionHandler
 {
@@ -49,13 +52,23 @@ class Handler extends ExceptionHandler
             if($e instanceof ValidationException){
                 ## 下面是你需要包装的数据
                 $result = [
-                    "code"=>1,
+                    "code"=>JsonResponse::HTTP_BAD_REQUEST,
                     "msg"  =>  $e->validator->errors()->first(), # 更好的获取错误的方法
                     ##"msg"=>array_values($exception->errors())[0][0],//这里 ValidationException 异常的格式通常是数组的形式，如果不确定如何取值可以打印下看下结构
                     "data"=>[]
                 ];
                 return response()->json($result);
             }
+            //来自token的错误捕获
+            if($e instanceof TokenBlacklistedException){
+                return response()->json([
+                    'code'=>JsonResponse::HTTP_UNAUTHORIZED, 'msg'=>$e->getMessage(), 'data'=>[]
+                ], JsonResponse::HTTP_UNAUTHORIZED);
+            }
+            // 暂时这样写
+            return response()->json([
+                'code'=>JsonResponse::HTTP_INTERNAL_SERVER_ERROR, 'msg'=>$e->getMessage(), 'data'=>[]
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
 
     }
