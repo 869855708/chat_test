@@ -45,7 +45,6 @@ class Handler extends ExceptionHandler
 
     // 重写render异常的全局捕获 适应api
     public function render($request, Throwable $e){
-        echo 1;
         ## 验证错误
         // 我们仅仅处理 api的异常，所以这里要排除下其他前缀路由
         if($request->is("api/*")){
@@ -72,6 +71,6 @@ class Handler extends ExceptionHandler
 //                'code'=>JsonResponse::HTTP_INTERNAL_SERVER_ERROR, 'msg'=>$e->getMessage(), 'data'=>[]
 //            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
-        echo 3;
+        parent::render($request, $e);
     }
 }
