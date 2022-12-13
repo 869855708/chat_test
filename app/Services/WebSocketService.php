@@ -28,7 +28,7 @@ class WebSocketService implements WebSocketHandlerInterface
     }
     public function onMessage(Server $server, Frame $frame)
     {
-//        Log::info('收到 message', [$frame->fd, $frame->data, $frame->opcode, $frame->finish]);
+        Log::info('收到 message', [$frame->fd, $frame->data, $frame->opcode, $frame->finish]);
         // 此处抛出的异常会被上层捕获并记录到Swoole日志，开发者需要手动try/catch
         $server->push($frame->fd, date('Y-m-d H:i:s'));
     }
