@@ -24,3 +24,11 @@ Route::post('/register', [\App\Http\Controllers\api\UserController::class, 'regi
 Route::post('/login', [\App\Http\Controllers\api\UserController::class, 'login']);
 Route::post('/logout', [\App\Http\Controllers\api\UserController::class, 'logout'])->middleware('apiAuth');
 Route::post('/refresh', [\App\Http\Controllers\api\UserController::class, 'refresh'])->middleware('apiAuth');
+
+
+
+/**
+ * Swagger-UI
+ */
+Route::get('/swagger/json', [\App\Http\Controllers\api\SwaggerController::class, 'getJSON']);
+Route::get('/swagger/my-data', [\App\Http\Controllers\api\SwaggerController::class, 'getMyData']);

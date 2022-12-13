@@ -17,6 +17,19 @@ class UserController extends Controller
      * 登录
      * @return \Illuminate\Http\JsonResponse
      */
+    /**
+     * @OA\Post(
+     *     path="/api/login",
+     *     tags={"user"},
+     *     summary="登录",
+     *     @OA\Parameter(name="isFastLogin", in="query", @OA\Schema(type="boolean")),
+     *     @OA\Parameter(name="tel", in="query", @OA\Schema(type="string")),
+     *     @OA\Parameter(name="verification_code", in="query", @OA\Schema(type="string")),
+     *     @OA\Parameter(name="password", in="query", @OA\Schema(type="string")),
+     *     @OA\Response(response=200, description="  {err_code: int32, msg:string, data:[]}  "
+     *     )
+     * )
+     */
     public function login(Request $request)
     {
         $credentials = $request->only('name', 'password');
