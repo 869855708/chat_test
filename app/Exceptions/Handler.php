@@ -45,9 +45,11 @@ class Handler extends ExceptionHandler
 
     // 重写render异常的全局捕获 适应api
     public function render($request, Throwable $e){
+        echo 1;
         ## 验证错误
         // 我们仅仅处理 api的异常，所以这里要排除下其他前缀路由
         if($request->is("api/*")){
+            echo 2;
             //如果抛出的异常是 ValidationException 的实例，我们就可以确定该异常是表单验证异常
             if($e instanceof ValidationException){
                 ## 下面是你需要包装的数据
@@ -70,5 +72,6 @@ class Handler extends ExceptionHandler
 //                'code'=>JsonResponse::HTTP_INTERNAL_SERVER_ERROR, 'msg'=>$e->getMessage(), 'data'=>[]
 //            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
+        echo 3;
     }
 }
