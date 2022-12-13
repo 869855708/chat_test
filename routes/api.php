@@ -30,5 +30,5 @@ Route::post('/refresh', [\App\Http\Controllers\api\UserController::class, 'refre
 /**
  * Swagger-UI
  */
-Route::get('/swagger/json', [\App\Http\Controllers\api\SwaggerController::class, 'getJSON']);
-Route::get('/swagger/my-data', [\App\Http\Controllers\api\SwaggerController::class, 'getMyData']);
+//Route::get('/swagger/json', [\App\Http\Controllers\api\SwaggerController::class, 'getJSON']);
+//Route::get('/swagger/my-data', [\App\Http\Controllers\api\SwaggerController::class, 'getMyData']);
