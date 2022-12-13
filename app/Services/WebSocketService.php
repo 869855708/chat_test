@@ -23,12 +23,12 @@ class WebSocketService implements WebSocketHandlerInterface
         // \Log::info('New WebSocket connection', [$request->fd, request()->all(), session()->getId(), session('xxx'), session(['yyy' => time()])]);
         // 此处抛出的异常会被上层捕获并记录到Swoole日志，开发者需要手动try/catch
         Log::info('WebSocket 建立连接');
-        Log::info($request->fd . '进入房间');
+//        Log::info($request->fd . '进入房间');
         $server->push($request->fd, '欢迎来到LaravelS');
     }
     public function onMessage(Server $server, Frame $frame)
     {
-        Log::info('收到 message', [$frame->fd, $frame->data, $frame->opcode, $frame->finish]);
+//        Log::info('收到 message', [$frame->fd, $frame->data, $frame->opcode, $frame->finish]);
         // 此处抛出的异常会被上层捕获并记录到Swoole日志，开发者需要手动try/catch
         $server->push($frame->fd, date('Y-m-d H:i:s'));
     }
