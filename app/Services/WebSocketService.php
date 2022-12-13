@@ -35,6 +35,6 @@ class WebSocketService implements WebSocketHandlerInterface
     public function onClose(Server $server, $fd, $reactorId)
     {
         Log::info('websocket 关闭');
-        Log::info($fd . '离开房间');
+//        Log::info($fd . '离开房间');
     }
 }
