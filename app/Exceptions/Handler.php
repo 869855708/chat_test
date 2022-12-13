@@ -66,9 +66,9 @@ class Handler extends ExceptionHandler
                 ], JsonResponse::HTTP_UNAUTHORIZED);
             }
             // 暂时这样写
-            return response()->json([
-                'code'=>JsonResponse::HTTP_INTERNAL_SERVER_ERROR, 'msg'=>$e->getMessage(), 'data'=>[]
-            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+//            return response()->json([
+//                'code'=>JsonResponse::HTTP_INTERNAL_SERVER_ERROR, 'msg'=>$e->getMessage(), 'data'=>[]
+//            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
