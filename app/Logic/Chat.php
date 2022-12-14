@@ -29,10 +29,10 @@ class Chat
                         $data = [
                             'type'=>'auth',
                             'code'=>20000,
-                            'msg'=>json_encode($user)
+                            'msg'=>$user
                         ];
                         $server->push($request->fd, '欢迎 '. $user->name . ' 连接成功');
-                        $server->push($request->fd, $data);
+                        $server->push($request->fd, json_encode($data));
                     }
                 } else {
                     //无效的用户
@@ -45,8 +45,13 @@ class Chat
                     $server->close($request->fd, true);
                 }
             } catch (TokenExpiredException $e) {
+                $data = [
+                    'type' => 'auth',
+                    'code' => 40001,
+                    'msg'  => $e->getMessage(),
+                ];
                 // 发送错误后断开连接
-                $server->push($request->fd, $e->getMessage());
+                $server->push($request->fd, json_encode($data));
                 $server->close($request->fd, true);
             }
 

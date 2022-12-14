@@ -30,7 +30,7 @@ class WebSocketService implements WebSocketHandlerInterface
         Log::debug('header头部：', $request->header);
 
         Chat::authCheck($server, $request);
-        $server->push($request->fd, '欢迎来到LaravelS');
+        //$server->push($request->fd, '欢迎来到LaravelS');
     }
 
 
