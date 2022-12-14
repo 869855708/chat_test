@@ -3,6 +3,7 @@
 namespace App\Logic;
 
 use Illuminate\Support\Facades\Log;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class Chat
@@ -19,29 +20,36 @@ class Chat
         // token为空拒绝连接
         if(!empty($token)) {
             Log::debug('token令牌：'. $token);
-            if(JWTAuth::setToken($token)) {
-                // 获取用户信息
-                $user = JWTAuth::toUser();
-                if($user){
+            try {
+                // 验证令牌是否有效
+                if(JWTAuth::setToken($token)) {
+                    // 获取用户信息
+                    $user = JWTAuth::toUser();
+                    if($user){
+                        $data = [
+                            'type'=>'auth',
+                            'code'=>20000,
+                            'msg'=>json_encode($user)
+                        ];
+                        $server->push($request->fd, '欢迎 '. $user->name . ' 连接成功');
+                        $server->push($request->fd, $data);
+                    }
+                } else {
+                    //无效的用户
                     $data = [
-                        'type'=>'auth',
-                        'code'=>20000,
-                        'msg'=>json_encode($user)
+                        'type' => 'auth',
+                        'code' => 40000,
+                        'msg'  => '获取用户失败，请检查令牌是否有效！',
                     ];
-                    $server->push($request->fd, '欢迎 '. $user->name . ' 连接成功');
-                    $server->push($request->fd, $data);
+                    $server->push($request->fd, json_encode($data));
+                    $server->close($request->fd, true);
                 }
-            } else {
-                //无效的用户
-                $data = [
-                    'type' => 'auth',
-                    'code' => 40000,
-                    'msg'  => '获取用户失败，请检查令牌是否有效！',
-                ];
-                $server->push($request->fd, json_encode($data));
+            } catch (TokenExpiredException $e) {
+                // 发送错误后断开连接
+                $server->push($request->fd, $e->getMessage());
                 $server->close($request->fd, true);
             }
-            // 验证令牌是否有效
+
         } else {
             // 没有令牌关闭ws连接 第二个参数reset设置为true会强制关闭连接，丢弃发送队列中的数据
             $server->close($request->fd, true);
