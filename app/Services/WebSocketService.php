@@ -29,7 +29,10 @@ class WebSocketService implements WebSocketHandlerInterface
 //        Log::info('当前在线人数', $conn_list);
         Log::debug('header头部：', $request->header);
         // 获取token
-        $token = $request->header['sec-websocket-protocol'];
+        $token = '';
+        if(isset($request->header['sec-websocket-protocol'])){
+            $token = $request->header['sec-websocket-protocol'];
+        }
         Chat::authCheck($token, $server, $request->fd);
         $server->push($request->fd, '欢迎来到LaravelS');
     }
