@@ -27,7 +27,7 @@ class WebSocketService implements WebSocketHandlerInterface
         Log::info($request->fd . '进入房间');
 //        $conn_list = $server->getClientList(0, 10);
 //        Log::info('当前在线人数', $conn_list);
-
+        Log::debug('header头部：', $request->header);
         // 获取token
         $token = $request->header['sec-websocket-protocol'];
         Chat::authCheck($token, $server, $request->fd);
