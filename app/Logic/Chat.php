@@ -21,7 +21,7 @@ class Chat
             Log::debug('token令牌：'. $token);
             if(JWTAuth::setToken($token)) {
                 // 获取用户信息
-                $user = JWTAuth::parseToken()->authenticate();
+                $user = JWTAuth::toUser();
                 if($user){
                     $data = [
                         'type'=>'auth',
