@@ -24,9 +24,9 @@ class WebSocketService implements WebSocketHandlerInterface
         // 此处抛出的异常会被上层捕获并记录到Swoole日志，开发者需要手动try/catch
         Log::info('WebSocket 建立连接');
         Log::info($request->fd . '进入房间');
-        $conn_list = $server->getClientList(0, 10);
-
-        Log::info('当前在线人数', $conn_list);
+//        $conn_list = $server->getClientList(0, 10);
+//        Log::info('当前在线人数', $conn_list);
+        Log::debug('请求头', $request->header);
         $server->push($request->fd, '欢迎来到LaravelS');
     }
     public function onMessage(Server $server, Frame $frame)
