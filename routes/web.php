@@ -20,3 +20,7 @@ Route::get('/', function () {
 Route::get('/chat', function () {
     return view('ws');
 });
+
+Route::get('/chat2', function () {
+    return view('ws2');
+});
