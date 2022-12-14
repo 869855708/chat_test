@@ -26,7 +26,7 @@ class WebSocketService implements WebSocketHandlerInterface
         Log::info($request->fd . '进入房间');
 //        $conn_list = $server->getClientList(0, 10);
 //        Log::info('当前在线人数', $conn_list);
-        Log::debug('参数', $request->header['sec-websocket-protocol']);
+        Log::debug('sec-websocket-protocol参数:'.$request->header['sec-websocket-protocol'] );
         Log::debug('请求头', $request->header);
         $server->push($request->fd, '欢迎来到LaravelS');
     }
