@@ -29,7 +29,13 @@ class WebSocketService implements WebSocketHandlerInterface
 //        Log::info('当前在线人数', $conn_list);
         Log::debug('header头部：', $request->header);
 
-        Chat::authCheck($server, $request);
+        $stat = Chat::authCheck($server, $request);
+        if($stat){
+
+        } else {
+            // 没有令牌或者令牌异常 关闭ws连接 第二个参数reset设置为true会强制关闭连接，丢弃发送队列中的数据
+            $server->close($request->fd, true);
+        }
         //$server->push($request->fd, '欢迎来到LaravelS');
     }
 
