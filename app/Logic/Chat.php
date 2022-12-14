@@ -18,6 +18,7 @@ class Chat
         }
         // token为空拒绝连接
         if(!empty($token)) {
+            Log::debug('token令牌：'. $token);
             if(JWTAuth::setToken($token)) {
                 // 获取用户信息
                 $user = JWTAuth::parseToken()->authenticate();
