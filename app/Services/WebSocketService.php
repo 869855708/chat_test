@@ -28,23 +28,24 @@ class WebSocketService implements WebSocketHandlerInterface
 //        $conn_list = $server->getClientList(0, 10);
 //        Log::info('当前在线人数', $conn_list);
         Log::debug('header头部：', $request->header);
-        // 获取token
-        $token = '';
-        if(isset($request->header['sec-websocket-protocol'])){
-            $token = $request->header['sec-websocket-protocol'];
-        }
-        Chat::authCheck($token, $server, $request->fd);
+
+        Chat::authCheck($server, $request);
         $server->push($request->fd, '欢迎来到LaravelS');
     }
+
+
+
     public function onMessage(Server $server, Frame $frame)
     {
         Log::info('收到 message', [$frame->fd, $frame->data, $frame->opcode, $frame->finish]);
         // 此处抛出的异常会被上层捕获并记录到Swoole日志，开发者需要手动try/catch
         $server->push($frame->fd, date('Y-m-d H:i:s'));
     }
+
+
+
     public function onClose(Server $server, $fd, $reactorId)
     {
-        Log::info('websocket 关闭');
-        Log::info($fd . '离开房间');
+        Log::info('连接关闭, '.$fd . '离开房间');
     }
 }

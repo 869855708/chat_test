@@ -48,7 +48,6 @@ class Handler extends ExceptionHandler
         ## 验证错误
         // 我们仅仅处理 api的异常，所以这里要排除下其他前缀路由
         if($request->is("api/*")){
-            echo 2;
             //如果抛出的异常是 ValidationException 的实例，我们就可以确定该异常是表单验证异常
             if($e instanceof ValidationException){
                 ## 下面是你需要包装的数据
@@ -65,9 +64,10 @@ class Handler extends ExceptionHandler
                     'code'=>JsonResponse::HTTP_UNAUTHORIZED, 'msg'=>$e->getMessage(), 'data'=>[]
                 ], JsonResponse::HTTP_UNAUTHORIZED);
             }
-            // 暂时这样写
+
+            // 暂时这样写 JsonResponse::HTTP_INTERNAL_SERVER_ERROR = 500
             return response()->json([
-                'code'=>JsonResponse::HTTP_INTERNAL_SERVER_ERROR, 'msg'=>$e->getMessage(), 'data'=>[]
+                'code'=>50000, 'msg'=>$e->getMessage(), 'data'=>[]
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
         // 返回默认父类异常处理， 不返回会有意想不到的错误出现
