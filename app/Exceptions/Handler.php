@@ -55,7 +55,6 @@ class Handler extends ExceptionHandler
                 $result = [
                     "code"=>JsonResponse::HTTP_BAD_REQUEST,
                     "msg"  =>  $e->validator->errors()->first(), # 更好的获取错误的方法
-                    ##"msg"=>array_values($exception->errors())[0][0],//这里 ValidationException 异常的格式通常是数组的形式，如果不确定如何取值可以打印下看下结构
                     "data"=>[]
                 ];
                 return response()->json($result);
@@ -71,6 +70,7 @@ class Handler extends ExceptionHandler
                 'code'=>JsonResponse::HTTP_INTERNAL_SERVER_ERROR, 'msg'=>$e->getMessage(), 'data'=>[]
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
+        // 返回默认父类异常处理， 不返回会有意想不到的错误出现
         return parent::render($request, $e);
     }
 }
