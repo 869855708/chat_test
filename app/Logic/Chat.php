@@ -33,7 +33,7 @@ class Chat
                         $server->push($request->fd, '欢迎 '. $user->name . ' 连接成功');
                         $server->push($request->fd, json_encode($data));
                     }
-                    return true;
+                    return $user;
                 } else {
                     //无效的用户
                     $data = [
@@ -42,7 +42,6 @@ class Chat
                         'msg'  => '获取用户失败，请检查令牌是否有效！',
                     ];
                     $server->push($request->fd, json_encode($data));
-//                    $server->close($request->fd, true);
                     return false;
                 }
             } catch (TokenExpiredException $e) {
@@ -53,13 +52,10 @@ class Chat
                 ];
                 // 发送错误后断开连接
                 $server->push($request->fd, json_encode($data));
-//                $server->close($request->fd, true);
                 return false;
             }
 
         } else {
-            // 没有令牌关闭ws连接 第二个参数reset设置为true会强制关闭连接，丢弃发送队列中的数据
-//            $server->close($request->fd, true);
             return false;
         }
     }

@@ -27,11 +27,12 @@ class WebSocketService implements WebSocketHandlerInterface
         Log::info($request->fd . '进入房间');
 //        $conn_list = $server->getClientList(0, 10);
 //        Log::info('当前在线人数', $conn_list);
-        Log::debug('header头部：', $request->header);
 
-        $stat = Chat::authCheck($server, $request);
-        if($stat){
-
+        $user = Chat::authCheck($server, $request);
+        if($user !== false){
+            // 将用户与当前连接的socket id绑定
+            $server->bind($request->fd, $user->id);
+            Log::debug('绑定的用户：', $server->getClientInfo($request->fd));
         } else {
             // 没有令牌或者令牌异常 关闭ws连接 第二个参数reset设置为true会强制关闭连接，丢弃发送队列中的数据
             $server->close($request->fd, true);
