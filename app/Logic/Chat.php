@@ -70,7 +70,7 @@ class Chat
         if(!empty($data['type'])){
             switch ($data['type']) {
                 case 'msg': //普通消息处理
-                    $userFd = $this->redisGet($data['user_id']);
+                    $userFd = $this->redisGet(2);
                     // 用户socket Id存在表示连接中，可以发送消息
                     if($userFd){
                         $user = JWTAuth::toUser();
