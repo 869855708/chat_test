@@ -3,6 +3,7 @@
 namespace App\Logic;
 
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -14,23 +15,24 @@ class Chat
     {
         // 获取token
         $token = '';
-        if(isset($request->header['sec-websocket-protocol'])){
+        if (isset($request->header['sec-websocket-protocol'])) {
             $token = $request->header['sec-websocket-protocol'];
         }
         // token为空拒绝连接
-        if(!empty($token)) {
+        if (!empty($token)) {
             try {
                 // 验证令牌是否有效
-                if(JWTAuth::setToken($token)) {
+                if (JWTAuth::setToken($token)) {
                     // 获取用户信息
                     $user = JWTAuth::toUser();
-                    if($user){
+                    if ($user) {
+//                        self::redis_set($user->id, $request->fd);
                         $data = [
-                            'type'=>'auth',
-                            'code'=>20000,
-                            'msg'=>$user
+                            'type' => 'auth',
+                            'code' => 20000,
+                            'msg'  => $user
                         ];
-                        $server->push($request->fd, '欢迎 '. $user->name . ' 连接成功');
+                        $server->push($request->fd, '欢迎 ' . $user->name . ' 连接成功');
                         $server->push($request->fd, json_encode($data));
                     }
                     return $user;
@@ -64,5 +66,11 @@ class Chat
     public function bind()
     {
 
+    }
+
+    public function redis_set($userId, $fd)
+    {
+        $key = 'chat_user_' . $userId;
+        Redis::SET($key, $fd);
     }
 }
