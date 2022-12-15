@@ -114,7 +114,7 @@ class Chat
             'msg'  => $msg,
         ];
 
-        $server->push($fd, json_encode($contents));
+        $server->push($fd, json_encode($contents, JSON_UNESCAPED_UNICODE));
     }
 
 
