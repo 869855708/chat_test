@@ -94,7 +94,6 @@ class UserController extends Controller
             if (JWTAuth::setToken($token)) {
                 //获取用户
                 $user = JWTAuth::parseToken()->authenticate();
-                Redis::SET('user_key', 115);
                 return response()->json(['code' => 200, 'msg' => 'success', 'data' => $user]);
             } else {
                 return response()->json(['code' => 400, 'msg' => '获取用户信息失败,请检查token令牌是否有效', 'data' => []]);

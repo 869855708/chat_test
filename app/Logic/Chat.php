@@ -26,7 +26,7 @@ class Chat
                     // 获取用户信息
                     $user = JWTAuth::toUser();
                     if ($user) {
-//                        self::redis_set($user->id, $request->fd);
+                        self::redis_set($user->id, $request->fd);
                         $data = [
                             'type' => 'auth',
                             'code' => 20000,
@@ -68,6 +68,7 @@ class Chat
 
     }
 
+    // 用户ID与socketId进行逻辑关联
     public function redis_set($userId, $fd)
     {
         $key = 'chat_user_' . $userId;
