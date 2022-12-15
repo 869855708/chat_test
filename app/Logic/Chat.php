@@ -65,29 +65,38 @@ class Chat
          * msg      消息内容
          * type     消息类型
          */
-        // 消息内容
-        $data = json_decode($frame->data,true);
-        if(!empty($data['type'])){
-            switch ($data['type']) {
-                case 'msg': //普通消息处理
-                    $userFd = $this->redisGet(2);
-                    // 用户socket Id存在表示连接中，可以发送消息
-                    if($userFd){
-                        $user = JWTAuth::toUser();
-                        $this->pushMessage($server, $userFd, ['user'=>$user->name, 'msg'=>$data['msg']]);
-                    } else {
-                        // 不存在表示用户当前没有进行连接，可以将消息加入数据库操作
-                    }
-                    break;
-                case 'tentative':// 暂定
-                    break;
-                default:
-                    $this->pushMessage($server, $frame->fd, '服务端无法处理您发送的消息, 请确认消息数据是否有效！', 'error', 40000);
-                    break;
-            }
+
+        $userFd = $this->redisGet(2);
+        // 用户socket Id存在表示连接中，可以发送消息
+        if($userFd){
+            $user = JWTAuth::toUser();
+            $this->pushMessage($server, $userFd, ['user'=>$user->name, 'msg'=>$frame->data]);
         } else {
-            $this->pushMessage($server, $frame->fd, '服务端无法处理您发送的消息, 请确认消息数据是否有效！', 'error', 40000);
+            // 不存在表示用户当前没有进行连接，可以将消息加入数据库操作
         }
+        // 消息内容
+//        $data = json_decode($frame->data,true);
+//        if(!empty($data['type'])){
+//            switch ($data['type']) {
+//                case 'msg': //普通消息处理
+//                    $userFd = $this->redisGet(2);
+//                    // 用户socket Id存在表示连接中，可以发送消息
+//                    if($userFd){
+//                        $user = JWTAuth::toUser();
+//                        $this->pushMessage($server, $userFd, ['user'=>$user->name, 'msg'=>$data['msg']]);
+//                    } else {
+//                        // 不存在表示用户当前没有进行连接，可以将消息加入数据库操作
+//                    }
+//                    break;
+//                case 'tentative':// 暂定
+//                    break;
+//                default:
+//                    $this->pushMessage($server, $frame->fd, '服务端无法处理您发送的消息, 请确认消息数据是否有效！', 'error', 40000);
+//                    break;
+//            }
+//        } else {
+//            $this->pushMessage($server, $frame->fd, '服务端无法处理您发送的消息, 请确认消息数据是否有效！', 'error', 40000);
+//        }
     }
 
     // 用户与fd标识绑定
