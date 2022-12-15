@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Logic\Chat;
 use Hhxsv5\LaravelS\Swoole\WebSocketHandlerInterface;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use Swoole\Http\Request;
 use Swoole\WebSocket\Frame;
 use Swoole\WebSocket\Server;
@@ -17,6 +18,7 @@ class WebSocketService implements WebSocketHandlerInterface
     {
     }
 
+    // 客户端连接成功回调
     public function onOpen(Server $server, Request $request)
     {
         // 在触发onOpen事件之前，建立WebSocket的HTTP请求已经经过了Laravel的路由，
@@ -28,7 +30,8 @@ class WebSocketService implements WebSocketHandlerInterface
 //        $conn_list = $server->getClientList(0, 10);
 //        Log::info('当前在线人数', $conn_list);
 
-        $user = Chat::authCheck($server, $request);
+        $chat = new Chat();
+        $user = $chat->authCheck($server, $request);
         if($user !== false){
             // 将用户与当前连接的socket id绑定
             $server->bind($request->fd, $user->id);
@@ -42,18 +45,38 @@ class WebSocketService implements WebSocketHandlerInterface
 
 
 
+    // 接收客户端发送的消息回调
     public function onMessage(Server $server, Frame $frame)
     {
-        Log::info('收到 message', [$frame->fd, $frame->data, $frame->opcode, $frame->finish]);
-        // 此处抛出的异常会被上层捕获并记录到Swoole日志，开发者需要手动try/catch
-        $server->push($frame->fd, date('Y-m-d H:i:s'));
+        try {
+            Log::info('收到 message', [$frame->fd, $frame->data, $frame->opcode, $frame->finish]);
+            // 此处抛出的异常会被上层捕获并记录到Swoole日志，开发者需要手动try/catch
+            $server->push($frame->fd, date('Y-m-d H:i:s'));
+            (new Chat())->messageHandling($server, $frame);
+        }catch (\Throwable $e){
+            Log::error('Error：'.$e->getMessage(), [
+                'ErrorMsg'=>$e->getMessage(),
+                'ErrorLine'=>$e->getLine(),
+                'ErrorFile'=>$e->getFile(),
+            ]);
+        }
+
     }
 
 
 
+    // 关闭连接回调
     public function onClose(Server $server, $fd, $reactorId)
     {
         Log::info('连接关闭, '.$fd . '离开房间');
-        Log::debug('getClientInfo：', $server->getClientInfo($fd));
+        // 获取bind关联用户的连接信息
+        $info = $server->getClientInfo($fd);
+        // 连接关闭时，删除redis中的记录
+        if($info !== false){
+            $user_key = Chat::KEY . $info['uid'];
+            if(Redis::exists($user_key)){
+                Redis::del($user_key);
+            }
+        }
     }
 }
