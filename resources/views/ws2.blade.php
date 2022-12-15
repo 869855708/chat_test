@@ -35,7 +35,8 @@
         }
 
         input.onchange = function() {
-            let msg = nick + ": " + input.value;
+            // let msg = nick + ": " + input.value;
+            let msg = input.value;
             socket.send(msg);
             input.value="";
         }
