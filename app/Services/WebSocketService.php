@@ -71,6 +71,7 @@ class WebSocketService implements WebSocketHandlerInterface
         Log::info('连接关闭, '.$fd . '离开房间');
         // 获取bind关联用户的连接信息
         $info = $server->getClientInfo($fd);
+        Log::debug('连接信息：', $info);
         // 连接关闭时，删除redis中的记录
         if($info !== false){
             $user_key = Chat::KEY . $info['uid'];
