@@ -72,8 +72,8 @@ class WebSocketService implements WebSocketHandlerInterface
         // 获取bind关联用户的连接信息
         $info = $server->getClientInfo($fd);
         Log::debug('连接信息：', $info);
-        // 连接关闭时，删除redis中的记录
-        if($info !== false){
+        // 连接关闭时，删除redis中的记录 判断一下uid是否存在，因为如果没有通过token验证是没有进行bind操作所以不会存在uid
+        if($info !== false && isset($info['uid'])){
             $user_key = Chat::KEY . $info['uid'];
             if(Redis::exists($user_key)){
                 Redis::del($user_key);

@@ -77,7 +77,7 @@ class Chat
                     if($userFd){
                         // 当前发送消息的用户
                         $user = JWTAuth::toUser();
-                        $this->pushMessage($server, $userFd, ['user_id'=>$user->id, 'username'=>$user->name, 'msg'=>$data['msg']]);
+                        $this->pushMessage($server, $userFd, ['user_id'=>$user->id, 'username'=>$user->name, 'contents'=>$data['msg']]);
                     } else {
                         // 不存在表示用户当前没有进行连接，可以将消息加入数据库操作
                     }
