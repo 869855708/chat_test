@@ -67,6 +67,8 @@ class Chat
          */
         // 消息内容
         $data = json_decode($frame->data,true);
+        Log::debug('用户消息:'.$frame->data);
+        Log::debug('用户消息转码后:', $data);
         if(!empty($data['type'])){
             switch ($data['type']) {
                 case 'msg': //普通消息处理

@@ -10,7 +10,7 @@
         let nick = prompt('Enter your nickname');
         let input = document.getElementById('input');
         input.focus();
-        let token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sYXN3b29sZS50ZXN0XC9hcGlcL2xvZ2luIiwiaWF0IjoxNjcxMTE4NzgxLCJleHAiOjE2NzExMTkzODEsIm5iZiI6MTY3MTExODc4MSwianRpIjoiMnlKWm5OcDljWVFBcTVmNyIsInN1YiI6MSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.rmZWoSnQrJyqBuwBirtw05qsR-6tNOeKNpmTbMhq7ME";
+        let token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sYXN3b29sZS50ZXN0XC9hcGlcL2xvZ2luIiwiaWF0IjoxNjcxMTgzMTA5LCJleHAiOjE2NzExODM3MDksIm5iZiI6MTY3MTE4MzEwOSwianRpIjoiSkFaeGhTeUVUN3dmMDF1MiIsInN1YiI6MSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.enM7-jFJA0R3iJCOc_DoCppN6B8b_bwXjA3LiEkXsFU";
         // 初始化客户端套接字并建立连接
         let socket = new WebSocket("ws://laravel-s.com/ws",[token]);
         // 建立连接时触发
