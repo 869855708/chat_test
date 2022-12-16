@@ -21,7 +21,8 @@
         // 接收到服务器信息
         socket.onmessage = function(event) {
             let msg = event.data;
-            console.log(msg);
+            let data = JSON.parse(msg);
+            console.log(data)
             let node = document.createTextNode(msg);
             let div = document.createElement('div');
             div.appendChild(node);
