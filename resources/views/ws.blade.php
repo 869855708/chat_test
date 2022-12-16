@@ -12,7 +12,8 @@
         input.focus();
         let token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sYXJhdmVsLXMuY29tXC9hcGlcL2xvZ2luIiwiaWF0IjoxNjcxMTg2NTczLCJleHAiOjE2NzExODgzNzMsIm5iZiI6MTY3MTE4NjU3MywianRpIjoiYlBaT21wbzdxcUEzTkNoMiIsInN1YiI6MSwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.o-fMbNwMFjJcBUF6ryPVXZvmgCVZNEXg4QSyF3IU8so";
         // 初始化客户端套接字并建立连接
-        let socket = new WebSocket("ws://laravel-s.com/ws",[token]);
+        // let socket = new WebSocket("ws://laravel-s.com/ws",[token]);
+        let socket = new WebSocket("ws://today.ouwentao.com/ws",[token]);
         // 建立连接时触发
         socket.onopen = function(event) {
             console.log('连接开始...');
