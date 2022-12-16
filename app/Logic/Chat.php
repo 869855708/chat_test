@@ -67,8 +67,6 @@ class Chat
          */
         // 消息内容
         $data = json_decode($frame->data,true);
-        Log::debug('用户消息:'.$frame->data);
-        Log::debug('用户消息转码后:', $data);
         if(!empty($data['type'])){
             switch ($data['type']) {
                 case 'msg': //普通消息处理
@@ -77,6 +75,7 @@ class Chat
                     if($userFd){
                         // 当前发送消息的用户
                         $user = JWTAuth::toUser();
+                        Log::debug($user->name . '用户对 【' . $userFd . '】 连接用户发送消息：', ['user_id'=>$user->id, 'username'=>$user->name, 'contents'=>$data['msg']]);
                         $this->pushMessage($server, $userFd, ['user_id'=>$user->id, 'username'=>$user->name, 'contents'=>$data['msg']]);
                     } else {
                         // 不存在表示用户当前没有进行连接，可以将消息加入数据库操作
