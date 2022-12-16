@@ -70,11 +70,12 @@ class Chat
         if(!empty($data['type'])){
             switch ($data['type']) {
                 case 'msg': //普通消息处理
-                    $userFd = $this->redisGet(2);
+                    $userFd = $this->redisGet($data['user_id']);
                     // 用户socket Id存在表示连接中，可以发送消息
                     if($userFd){
+                        // 当前发送消息的用户
                         $user = JWTAuth::toUser();
-                        $this->pushMessage($server, $userFd, ['user'=>$user->name, 'msg'=>$data['msg']]);
+                        $this->pushMessage($server, $userFd, ['user_id'=>$user->id, 'username'=>$user->name, 'msg'=>$data['msg']]);
                     } else {
                         // 不存在表示用户当前没有进行连接，可以将消息加入数据库操作
                     }
@@ -114,6 +115,7 @@ class Chat
             'msg'  => $msg,
         ];
 
+        // 中文转码
         $server->push($fd, json_encode($contents, JSON_UNESCAPED_UNICODE));
     }
 

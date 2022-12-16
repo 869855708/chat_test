@@ -37,7 +37,13 @@
         input.onchange = function() {
             // let msg = nick + ": " + input.value;
             let msg = input.value;
-            socket.send(msg);
+            var data = {
+                "user_id":1,
+                "msg":msg,
+                "type":"msg",
+            }
+            var json_data = JSON.stringify(data)
+            socket.send(json_data);
             input.value="";
         }
     }
