@@ -14,6 +14,8 @@
         // 初始化客户端套接字并建立连接
         // let socket = new WebSocket("ws://laravel-s.com/ws",[token]);
         let socket = new WebSocket("ws://today.ouwentao.com/ws",[token]);
+
+        console.log(socket.readyState);
         // 建立连接时触发
         socket.onopen = function(event) {
             console.log('连接开始...');

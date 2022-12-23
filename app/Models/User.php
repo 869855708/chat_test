@@ -15,7 +15,7 @@ class User extends Authenticatable implements JWTSubject
 
     /**
      * The attributes that are mass assignable.
-     *
+     * 可以大量分配的属性。
      * @var array<int, string>
      */
     protected $fillable = [
@@ -26,7 +26,7 @@ class User extends Authenticatable implements JWTSubject
 
     /**
      * The attributes that should be hidden for serialization.
-     *
+     * 应该为序列化而隐藏的属性。
      * @var array<int, string>
      */
     protected $hidden = [
@@ -36,7 +36,7 @@ class User extends Authenticatable implements JWTSubject
 
     /**
      * The attributes that should be cast.
-     *
+     * 应该强制转换的属性。
      * @var array<string, string>
      */
     protected $casts = [

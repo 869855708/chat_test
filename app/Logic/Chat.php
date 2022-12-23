@@ -13,10 +13,11 @@ class Chat
     // 聊天室用户key
     const KEY = 'chat_user_';
 
-    //验证连接用户token
-    public function authCheck($server, $request)
+    //连接授权
+    public function connectAuth($server, $request)
     {
         // 在连接的自定义协议中 获取token
+        // 验证连接用户token
         $token = '';
         if (isset($request->header['sec-websocket-protocol'])) {
             $token = $request->header['sec-websocket-protocol'];
